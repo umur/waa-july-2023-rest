@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet"
+          href="css/bootstrap.min.css" />
+    <link rel="stylesheet"
+          href="css/font-awesome.css" />
+</head>
+<body>
+<div class="col-7">
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-info text-center text-white">
+                <h3>List Of Courses</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover" id="courseList">
+                    <script>
+                        loadCourses();
+                        function loadCourses() {
+                            var xhr = new XMLHttpRequest();
+                            var url = "/courses";
+                            xhr.open("GET", url, true);
+                            xhr.setRequestHeader("Content-Type", "application/json");
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === 4 && xhr.status === 200) {
+                                    var data = JSON.parse(xhr.responseText);
+                                    var rows = "<tr class=\"bg-dark text-white\">\n" +
+                                        "                        <th>ID</th>\n" +
+                                        "                        <th>Name</th>\n" +
+                                        "                        <th>Code</th>\n" +
+                                        "                        <th></th>\n" +
+                                        "                    </tr>";
+                                    for (var i = 0; i < data.length; i++) {
+                                        rows += "<tr><td>" + data[i]["id"] + "</td>" +
+                                            "<td>" + data[i]["name"] + "</td>" +
+                                            "<td>" + data[i]["code"] + "</td>" +
+                                            "<td><a href=\"editCourse.html?id=" + data[i]["id"] + "\" class= \"btn btn-danger\">Edit</a>&nbsp;&nbsp;" +
+                                            "<a onclick=\"deleteCourse(" + data[i]["id"] + ")\" class= \"btn btn-danger\">Delete</a></td></tr>";
+
+                                    }
+                                    document.getElementById("courseList").innerHTML = rows;
+                                }
+                            };
+                            xhr.send();
+                        }
+
+                        function deleteCourse(id) {
+                            var xhr = new XMLHttpRequest();
+                            var url = "/courses/" + id;
+                            xhr.open("DELETE", url, true);
+                            xhr.setRequestHeader("Content-Type", "application/json");
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === 4 && xhr.status === 200) {
+                                    loadCourses();
+                                }
+                                else if (xhr.readyState === 4 && xhr.status >= 400) {
+                                    alert(xhr.responseText);
+                                }
+                            };
+                            xhr.send();
+                        }
+                    </script>
+                </table>
+                <a href="editCourse.html" class= "btn btn-success ">Add Course</a>&nbsp;&nbsp;
+                <a href="index.html" class= "btn btn-primary">Go to Back</a>
+            </div>
+        </div>
+    </div></div>
+</body>
+</html>

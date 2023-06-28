@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet"
+          href="css/bootstrap.min.css" />
+    <link rel="stylesheet"
+          href="css/font-awesome.css" />
+</head>
+
+<script>
+
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    window.courseId = urlParams.get('id');
+    if(courseId) {
+        loadCourse(courseId);
+    }
+    function loadCourse(courseId) {
+        var xhr = new XMLHttpRequest();
+        var url = "/courses/" + courseId;
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                window.course = JSON.parse(xhr.responseText);
+                document.getElementById("name").value = window.course['name'];
+                document.getElementById("code").value = window.course['code'];
+            }
+        };
+        xhr.send();
+    }
+
+    function saveCourse() {
+        var data = {"name": document.getElementById("name").value, "code": document.getElementById("code").value};
+        var method = "POST";
+        if(window.courseId) {
+            data['id'] = window.courseId;
+            method = "PUT";
+        } else {
+            data['id'] = new Date().getTime();
+        }
+        data = JSON.stringify(data);
+        var xhr = new XMLHttpRequest();
+        var url = "/courses";
+        xhr.open(method, url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                alert("Course has been saved successfully");
+            } else if (xhr.readyState === 4 && xhr.status >= 400) {
+                alert(xhr.responseText);
+            }
+        };
+        xhr.send(data);
+    }
+</script>
+<body>
+<div class="col-5">
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-info text-center text-white">
+                <h3>Create/Edit Course</h3>
+            </div>
+            <div class="card-body">
+                <form action="/courses" id="courseForm">
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="name"><b>Name</b></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" name="name" id="name"
+                                   class="form-control" />
+                        </div>
+                    </div> <br/>
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="location"><b>Code</b></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" name="code" id="code"
+                                   class="form-control" />
+                        </div>
+                    </div><br/>
+                    <button type="button" onclick="saveCourse()" class="btn btn-success">Save Course</button>
+                    <a href="courses.html" class= "btn btn-primary">Show All Courses</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

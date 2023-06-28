@@ -1,0 +1,285 @@
+{
+	"info": {
+		"_postman_id": "3c68c2b9-2502-4a35-a9c9-451c1f4bdc7c",
+		"name": "Rest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "80947",
+		"_collection_link": "https://orange-crescent-754564.postman.co/workspace/de932940-1cc9-4a91-8d0a-7590b25d4b15/collection/80947-3c68c2b9-2502-4a35-a9c9-451c1f4bdc7c?action=share&creator=80947&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Get All Courses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/courses",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"courses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Students",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/students",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Sutdent by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/students/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"students",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Course By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/courses/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"courses",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Students By Major",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/students/filterStudentsByMajor?major=ComPro",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"students",
+						"filterStudentsByMajor"
+					],
+					"query": [
+						{
+							"key": "major",
+							"value": "ComPro"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Courses by Student ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/students/getCoursesByStudentId?id=1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"students",
+						"getCoursesByStudentId"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Course",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":20,\n    \"name\":\"Sample Course\",\n    \"code\":\"344\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/courses",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"courses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Course",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":20,\n    \"name\":\"Modified name of the course\",\n    \"code\": \"444\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/courses",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"courses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Course",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/courses/20",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"courses",
+						"20"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Student",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":20,\n    \"firstName\":\"Testttt\",\n    \"lastName\": \"Testttt\",\n    \"email\":\"test@miu.edu\",\n    \"major\":\"ComPro\",\n    \"coursesTaken\": [\n        {\n        \"id\": 8,\n        \"name\": \"Big Data\",\n        \"code\": \"522\"\n        },\n        {\n            \"id\": 9,\n            \"name\": \"Cloud Computing\",\n            \"code\": \"516\"\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/students",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Student",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":20,\n    \"firstName\":\"Modified Testttt\",\n    \"lastName\": \"Testttt\",\n    \"email\":\"test@miu.edu\",\n    \"major\":\"ComPro\",\n    \"coursesTaken\": [\n        {\n        \"id\": 8,\n        \"name\": \"Big Data\",\n        \"code\": \"522\"\n        },\n        {\n            \"id\": 9,\n            \"name\": \"Cloud Computing\",\n            \"code\": \"516\"\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/students",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Student",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/students/20",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"students",
+						"20"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

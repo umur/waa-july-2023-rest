@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet"
+          href="css/bootstrap.min.css" />
+    <link rel="stylesheet"
+          href="css/font-awesome.css" />
+</head>
+<body>
+<div class="col-7">
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-info text-center text-white">
+                <h3>List Of Students</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover" id="studentList">
+                    <script>
+                        loadStudents();
+                        function loadStudents() {
+                            var xhr = new XMLHttpRequest();
+                            var url = "/students";
+                            xhr.open("GET", url, true);
+                            xhr.setRequestHeader("Content-Type", "application/json");
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === 4 && xhr.status === 200) {
+                                    var data = JSON.parse(xhr.responseText);
+                                    var rows = "<tr class=\"bg-dark text-white\">\n" +
+                                        "                        <th>ID</th>\n" +
+                                        "                        <th>FirstName</th>\n" +
+                                        "                        <th>LastName</th>\n" +
+                                        "                        <th>Email</th>\n" +
+                                        "                        <th>Major</th>\n" +
+                                        "                        <th>Courses taken</th>\n" +
+                                        "                        <th></th>\n" +
+                                        "                    </tr>";
+                                    for (var i = 0; i < data.length; i++) {
+                                        var courses = [];
+
+                                        for(var k=0; k<data[i]["coursesTaken"].length; k++) {
+                                            var course = data[i]["coursesTaken"][k];
+                                            courses.push(course['name'] + "(" + course['code'] + ")");
+                                        }
+                                        rows += "<tr><td>" + data[i]["id"] + "</td>" +
+                                            "<td>" + data[i]["firstName"] + "</td>" +
+                                            "<td>" + data[i]["lastName"] + "</td>" +
+                                            "<td>" + data[i]["email"] + "</td>" +
+                                            "<td>" + data[i]["major"] + "</td>" +
+                                            "<td>" + courses.join(', ') + "</td>" +
+                                            "<td><a href=\"editStudent.html?id=" + data[i]["id"] + "\" class= \"btn btn-danger\">Edit</a>&nbsp;&nbsp;" +
+                                            "<a onclick=\"deleteStudent(" + data[i]["id"] + ")\" class= \"btn btn-danger\">Delete</a></td></tr>";
+
+                                    }
+                                    document.getElementById("studentList").innerHTML = rows;
+                                }
+                            };
+                            xhr.send();
+                        }
+
+                        function deleteStudent(id) {
+                            var xhr = new XMLHttpRequest();
+                            var url = "/students/" + id;
+                            xhr.open("DELETE", url, true);
+                            xhr.setRequestHeader("Content-Type", "application/json");
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === 4 && xhr.status === 200) {
+                                    loadStudents();
+                                }
+                            };
+                            xhr.send();
+                        }
+                    </script>
+                </table>
+                <a href="editStudent.html" class= "btn btn-success ">Add Student</a>&nbsp;&nbsp;
+                <a href="index.html" class= "btn btn-primary">Go to Back</a>
+            </div>
+        </div>
+    </div></div>
+</body>
+</html>
