@@ -1,0 +1,54 @@
+package waa.restapp.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import waa.restapp.domain.Course;
+import waa.restapp.domain.Student;
+import waa.restapp.repository.StudentRepository;
+
+import java.util.List;
+
+@RequiredArgsConstructor
+@Service
+public class StudentServiceImpl implements StudentService{
+
+    private final StudentRepository studentRepository;
+
+    @Override
+    public void create(Student student) {
+        if (student.getCoursesTaken() == null) throw new RuntimeException("Courses cannot be empty");
+        if (student.getMajor().isEmpty()) throw new RuntimeException("You must provide a major");
+        if (student.getEmail().isEmpty() || !student.getEmail().contains("@")) throw new RuntimeException("Invalid email");
+        if (student.getLastName().isEmpty() || student.getFirstName().isEmpty()) throw new RuntimeException("Invalid first name or last name");
+    }
+
+    @Override
+    public List<Student> findAll() {
+        return studentRepository.findAll();
+    }
+
+    @Override
+    public Student findOne(Integer id) {
+        return studentRepository.findOne(id);
+    }
+
+    @Override
+    public List<Student> getStudentsByMajor(String major) {
+        return studentRepository.getStudentsByMajor(major);
+    }
+
+    @Override
+    public List<Course> getCoursesByStudentId(int studentId) {
+        return studentRepository.getCoursesByStudentId(studentId);
+    }
+
+    @Override
+    public Student update(Integer id, Student course) {
+        return studentRepository.update(id, course);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        studentRepository.delete(id);
+    }
+}
