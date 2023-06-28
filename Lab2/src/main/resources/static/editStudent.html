@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet"
+          href="css/bootstrap.min.css" />
+    <link rel="stylesheet"
+          href="css/font-awesome.css" />
+</head>
+
+<script>
+
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    window.studentId = urlParams.get('id');
+    if(studentId) {
+        loadStudent(studentId);
+    }
+    function loadStudent(studentId) {
+        var xhr = new XMLHttpRequest();
+        var url = "/students/" + studentId;
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                window.student = JSON.parse(xhr.responseText);
+                var courses = window.student['coursesTaken'];
+                var coursesTaken = [];
+                for(var i=0; i<courses.length; i++) {
+                    coursesTaken.push(courses[i]['id']);
+                }
+                document.getElementById("firstName").value = window.student['firstName'];
+                document.getElementById("lastName").value = window.student['lastName'];
+                document.getElementById("email").value = window.student['email'];
+                document.getElementById("major").value = window.student['major'];
+                document.getElementById("coursesTaken").value = coursesTaken.join(',');
+            }
+        };
+        xhr.send();
+    }
+
+    function saveStudent() {
+        var courses = document.getElementById("coursesTaken").value.split(',');
+        var coursesTaken = [];
+        for(var i=0; i<courses.length; i++) {
+            for(var k=0; k< window.allCourses.length; k++) {
+                if(courses[i] == window.allCourses[k]['id']) {
+                    coursesTaken.push(window.allCourses[k]);
+                    break;
+                }
+            }
+        }
+        var data = {"firstName": document.getElementById("firstName").value,
+                     "lastName": document.getElementById("lastName").value,
+                     "email": document.getElementById("email").value,
+                     "major": document.getElementById("major").value,
+                     "coursesTaken": coursesTaken};
+        var method = "POST";
+        if(window.studentId) {
+            data['id'] = window.studentId;
+            method = "PUT";
+        } else {
+            data['id'] = new Date().getTime();
+        }
+        data = JSON.stringify(data);
+        var xhr = new XMLHttpRequest();
+        var url = "/students";
+        xhr.open(method, url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                alert("Student has been saved successfully");
+            } else if (xhr.readyState === 4 && xhr.status >= 400) {
+                alert(xhr.responseText);
+            }
+        };
+        xhr.send(data);
+    }
+
+    loadCourses();
+    function loadCourses() {
+        var xhr = new XMLHttpRequest();
+        var url = "/courses";
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                window.allCourses = JSON.parse(xhr.responseText);
+            }
+        };
+        xhr.send();
+    }
+    window.allCourses = [];
+</script>
+<body>
+<div class="col-5">
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-info text-center text-white">
+                <h3>Create/Edit Student</h3>
+            </div>
+            <div class="card-body">
+                <form action="/courses" id="courseForm">
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="firstName"><b>FirstName</b></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" name="firstName" id="firstName"
+                                   class="form-control" />
+                        </div>
+                    </div> <br/>
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="lastName"><b>LastName</b></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" name="lastName" id="lastName"
+                                   class="form-control" />
+                        </div>
+                    </div><br/>
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="email"><b>Email</b></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" name="email" id="email"
+                                   class="form-control" />
+                        </div>
+                    </div><br/>
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="major"><b>Major</b></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" name="major" id="major"
+                                   class="form-control" />
+                        </div>
+                    </div><br/>
+                    <div class="row">
+                        <div class="col-2">
+                            <label for="coursesTaken"><b>Courses taken(enter id of courses with comma separated</b></label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" name="coursesTaken" id="coursesTaken"
+                                   class="form-control" />
+                        </div>
+                    </div><br/>
+                    <button type="button" onclick="saveStudent()" class="btn btn-success">Save Student</button>
+                    <a href="students.html" class= "btn btn-primary">Show All Students</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
