@@ -6,7 +6,7 @@ import waa.restapp.domain.Student;
 import java.util.List;
 
 public interface StudentService {
-    public void create(Student student);
+    void create(Student student);
 
     List<Student> findAll();
 

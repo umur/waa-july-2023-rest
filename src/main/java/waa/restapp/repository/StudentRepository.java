@@ -21,7 +21,7 @@ public class StudentRepository {
     }
 
     public Student findOne(int id){
-        return studentList.get(id);
+        return studentList.stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
     }
 
     public List<Student> getStudentsByMajor(String major){
@@ -34,12 +34,17 @@ public class StudentRepository {
     }
 
     public Student update(Integer id, Student student){
-        Student student1 = findOne(id);
-        student1 = student;
-        return student1;
+        return studentList.stream().filter(x -> x.getId().equals(id)).findFirst().map(v -> {
+            v.setFirstName(student.getFirstName());
+            v.setLastName(student.getLastName());
+            v.setEmail(student.getEmail());
+            v.setMajor(student.getMajor());
+            v.setCoursesTaken(student.getCoursesTaken());
+            return v;
+        }).orElse(null);
     }
 
     public void delete(int id){
-        studentList.remove(id);
+        studentList.remove(findOne(id));
     }
 }
