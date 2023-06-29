@@ -12,15 +12,16 @@ import java.util.Objects;
 public class StudentRepository {
     static List<Student> studentList = new ArrayList<>();
 
-    public void create(Student student){
+    public Student create(Student student){
         studentList.add(student);
+        return student;
     }
 
     public List<Student> findAll(){
         return studentList;
     }
 
-    public Student findOne(int id){
+    public Student findById(Integer id){
         return studentList.stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
     }
 
@@ -29,7 +30,7 @@ public class StudentRepository {
     }
 
     public List<Course> getCoursesByStudentId(int studentId){
-        Student student = findOne(studentId);
+        Student student = findById(studentId);
         return student.getCoursesTaken();
     }
 
@@ -45,6 +46,6 @@ public class StudentRepository {
     }
 
     public void delete(int id){
-        studentList.remove(findOne(id));
+        studentList.remove(findById(id));
     }
 }

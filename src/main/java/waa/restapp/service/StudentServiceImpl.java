@@ -15,11 +15,12 @@ public class StudentServiceImpl implements StudentService{
     private final StudentRepository studentRepository;
 
     @Override
-    public void create(Student student) {
+    public Student create(Student student) {
         if (student.getCoursesTaken() == null) throw new RuntimeException("Courses cannot be empty");
         if (student.getMajor().isEmpty()) throw new RuntimeException("You must provide a major");
         if (student.getEmail().isEmpty() || !student.getEmail().contains("@")) throw new RuntimeException("Invalid email");
         if (student.getLastName().isEmpty() || student.getFirstName().isEmpty()) throw new RuntimeException("Invalid first name or last name");
+        return studentRepository.create(student);
     }
 
     @Override
@@ -28,8 +29,8 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Student findOne(Integer id) {
-        return studentRepository.findOne(id);
+    public Student findById(Integer id) {
+        return studentRepository.findById(id);
     }
 
     @Override

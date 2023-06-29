@@ -15,8 +15,8 @@ public class StudentController {
     private StudentService studentService;
 
     @PostMapping
-    public void create(@RequestBody Student student){
-        studentService.create(student);
+    public Student create(@RequestBody Student student){
+        return studentService.create(student);
     }
 
     @GetMapping
@@ -25,8 +25,8 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public Student getOne(@PathVariable Integer id){
-        return studentService.findOne(id);
+    public Student getById(@PathVariable Integer id){
+        return studentService.findById(id);
     }
 
     @GetMapping("/major/{major}")

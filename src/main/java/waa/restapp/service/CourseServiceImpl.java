@@ -14,10 +14,10 @@ public class CourseServiceImpl implements CourseService{
     private final CourseRepository courseRepository;
 
     @Override
-    public void create(Course course) {
+    public Course create(Course course) {
         if (course.getName().length() < 3  || course.getCode().length() < 3) throw new RuntimeException("Course name and code must be greater than 3 chars");
         if (course.getId() < 0) throw new RuntimeException("Course ID must be an integer");
-        courseRepository.create(course);
+        return courseRepository.create(course);
     }
 
     @Override
@@ -26,8 +26,8 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public Course findOne(Integer id) {
-        return courseRepository.findOne(id);
+    public Course findById(Integer id) {
+        return courseRepository.findById(id);
     }
 
     @Override

@@ -5,11 +5,11 @@ import waa.restapp.domain.Course;
 import java.util.List;
 
 public interface CourseService {
-    void create(Course course);
+    Course create(Course course);
 
     List<Course> findAll();
 
-    Course findOne(Integer id);
+    Course findById(Integer id);
 
     Course update(Integer id, Course course);
     void delete(Integer id);

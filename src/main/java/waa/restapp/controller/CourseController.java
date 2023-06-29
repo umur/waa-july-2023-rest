@@ -15,8 +15,8 @@ public class CourseController {
     private CourseService courseService;
 
     @PostMapping
-    public void create(@RequestBody Course course){
-        courseService.create(course);
+    public Course create(@RequestBody Course course){
+        return courseService.create(course);
     }
 
     @GetMapping
@@ -25,8 +25,8 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public Course getOne(@PathVariable Integer id){
-        return courseService.findOne(id);
+    public Course getById(@PathVariable Integer id){
+        return courseService.findById(id);
     }
 
     @PutMapping("/{id}")

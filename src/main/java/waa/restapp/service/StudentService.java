@@ -6,11 +6,11 @@ import waa.restapp.domain.Student;
 import java.util.List;
 
 public interface StudentService {
-    void create(Student student);
+    Student create(Student student);
 
     List<Student> findAll();
 
-    Student findOne(Integer id);
+    Student findById(Integer id);
 
     List<Student> getStudentsByMajor(String major);
 

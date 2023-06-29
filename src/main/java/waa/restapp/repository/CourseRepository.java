@@ -10,15 +10,16 @@ import java.util.List;
 public class CourseRepository {
     static List<Course> courseList = new ArrayList<>();
 
-    public void create(Course course){
+    public Course create(Course course){
         courseList.add(course);
+        return course;
     }
 
     public List<Course> findAll(){
         return courseList;
     }
 
-    public Course findOne(int id){
+    public Course findById(int id){
         return courseList.stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
     }
 
@@ -31,7 +32,7 @@ public class CourseRepository {
     }
 
     public void delete(int id){
-        courseList.remove(findOne(id));
+        courseList.remove(findById(id));
     }
 
 }
