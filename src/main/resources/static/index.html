@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Course and Student Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Course and Student Management</a>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>Course and Student Management</h1>
+
+        <h2>Add Course</h2>
+        <form id="addCourseForm">
+            <div class="form-group">
+                <label for="courseName">Name:</label>
+                <input type="text" class="form-control" id="courseName" required>
+            </div>
+            <div class="form-group">
+                <label for="courseCode">Code:</label>
+                <input type="text" class="form-control" id="courseCode" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Course</button>
+        </form>
+
+        <h2>Courses</h2>
+        <ul class="list-group" id="courseList"></ul>
+
+        <h2>Students</h2>
+        <ul class="list-group" id="studentList"></ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.14.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Fetch and display the list of courses
+        fetch('http://localhost:8000/courses')
+            .then(response => response.json())
+            .then(courses => {
+                const courseList = document.getElementById('courseList');
+                courses.forEach(course => {
+                    const courseItem = document.createElement('li');
+                    courseItem.className = 'list-group-item';
+                    courseItem.innerHTML = `
+                ID: ${course.id}, Name: ${course.name}, Code: ${course.code}
+                <button class="btn btn-sm btn-danger delete-course" data-course-id="${course.id}">Delete</button>
+            `;
+                    courseList.appendChild(courseItem);
+                });
+            });
+
+
+        // Handle form submission for deleting a course
+        document.getElementById('courseList').addEventListener('click', function (event) {
+            if (event.target.classList.contains('delete-course')) {
+                const courseId = event.target.dataset.courseId;
+
+                fetch(`http://localhost:8000/courses/${courseId}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            event.target.parentNode.remove();
+                        }
+                    });
+            }
+        });
+
+        // Fetch and display the list of students
+        fetch('http://localhost:8000/students')
+            .then(response => response.json())
+            .then(students => {
+                const studentList = document.getElementById('studentList');
+                students.forEach(student => {
+                    const studentItem = document.createElement('li');
+                    studentItem.className = 'list-group-item';
+                    studentItem.textContent = `ID: ${student.id}, Name: ${student.firstName} ${student.lastName}, Email: ${student.email}, Major: ${student.major}`;
+                    studentList.appendChild(studentItem);
+                });
+            });
+
+        // Handle form submission for adding a course
+        document.getElementById('addCourseForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const courseName = document.getElementById('courseName').value;
+            const courseCode = document.getElementById('courseCode').value;
+            const newCourse = {
+                name: courseName,
+                code: courseCode
+            };
+
+            fetch('http://localhost:8000/courses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newCourse)
+            })
+                .then(response => response.json())
+                .then(createdCourse => {
+                    const courseList = document.getElementById('courseList');
+                    const courseItem = document.createElement('li');
+                    courseItem.className = 'list-group-item';
+                    courseItem.textContent = `ID: ${createdCourse.id}, Name: ${createdCourse.name}, Code: ${createdCourse.code}`;
+                    courseList.appendChild(courseItem);
+
+                    // Clear the form fields
+                    document.getElementById('courseName').value = '';
+                    document.getElementById('courseCode').value = '';
+                });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Course and Student Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Course and Student Management</a>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>Course and Student Management</h1>
+
+        <h2>Courses</h2>
+        <ul class="list-group" id="courseList"></ul>
+
+        <h2>Students</h2>
+        <ul class="list-group" id="studentList"></ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.14.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Fetch and display the list of courses
+        fetch('http://localhost:8000/courses')
+            .then(response => response.json())
+            .then(courses => {
+                const courseList = document.getElementById('courseList');
+                courses.forEach(course => {
+                    const courseItem = document.createElement('li');
+                    courseItem.className = 'list-group-item';
+                    courseItem.textContent = `ID: ${course.id}, Name: ${course.name}, Code: ${course.code}`;
+                    courseList.appendChild(courseItem);
+                });
+            });
+
+        // Fetch and display the list of students
+        fetch('http://localhost:8000/students')
+            .then(response => response.json())
+            .then(students => {
+                const studentList = document.getElementById('studentList');
+                students.forEach(student => {
+                    const studentItem = document.createElement('li');
+                    studentItem.className = 'list-group-item';
+                    studentItem.textContent = `ID: ${student.id}, Name: ${student.firstName} ${student.lastName}, Email: ${student.email}, Major: ${student.major}`;
+                    studentList.appendChild(studentItem);
+                });
+            });
+    </script>
+</body>
+</html>
