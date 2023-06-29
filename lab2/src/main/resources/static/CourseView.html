@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="students" href="student.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div>
+    <input type="text" id ="txtId" placeholder="enter student Id to get">
+    <button id = "getId"> GetCoursesByStudentId</button>
+    <div id="output" >
+        <table border="1">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Code</th>
+            </tr>
+            <tbody id="mybody">
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    document.getElementById("getId").onclick = async function(){
+        let id = document.getElementById("txtId").value;
+            let response = await fetch('http://localhost:8090/coursesByStudentId/' +id )
+            let result = await response.json();
+
+            let html = document.getElementById("mybody").innerHTML;
+            console.log(result);
+
+        html += `<tr>
+<td> ${result.id}</td>
+<td> ${result.name}</td>
+<td> ${result.code}</td>
+
+</tr>`
+
+        document.getElementById("mybody").innerHTML = html;
+
+    }
+</script>
+</body>
+</html>
+
