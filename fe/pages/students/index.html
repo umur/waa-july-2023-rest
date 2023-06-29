@@ -5,11 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Document</title>
+    <title>Students</title>
   </head>
   <body>
-    <script></script>
-
     <aside
       id="default-sidebar"
       class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
@@ -27,7 +25,7 @@
           </li>
           <li>
             <a
-              href="./pages/addCourse/addForm.html"
+              href="./pages/courses/add.html"
               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <span class="flex-1 ml-3 whitespace-nowrap">Add Course</span>
@@ -53,6 +51,38 @@
       </div>
     </aside>
 
-    <div class="p-4 sm:ml-64">Select Option</div>
+    <div class="p-4 sm:ml-64">
+      <table>
+        <tr>
+          <th>id</th>
+          <th>FirstName</th>
+          <th>LastName</th>
+          <th>Email</th>
+          <th>Major</th>
+          <th>id</th>
+        </tr>
+
+        <script defer type="module">
+          fetch("http://localhost:8080/courses", {
+            method: "GET",
+            body: dataObject,
+            headers: { "Content-Type": "application/json" },
+          }).then((response) => {
+            const rows = response.data
+              .map(
+                (course) =>
+                  `<tr>
+                <td> ${course["id"]} </td>
+                <td> ${course["firstName"]} </td>
+                <td> ${course["lastName"]} </td>
+                <td> ${course["email"]} </td>
+                <td> ${course["major"]} </td>
+                </tr>`
+              )
+              .join("");
+          });
+        </script>
+      </table>
+    </div>
   </body>
 </html>
