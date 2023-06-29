@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Student Course Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h4>Student Course Management</h4>
+    <br/>
+
+
+
+    <!-- Student Management -->
+    <h6 style="margin-top: 100px">Students</h6>
+    <table class="table" style="margin-top: 30px">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Major</th>
+            <th>Courses Taken</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="studentTableBody"></tbody>
+    </table>
+
+    <!-- Update Student Form Modal -->
+
+
+    <!-- Add Student Button -->
+    <button type="button" class="btn btn-primary" style="margin-top: 120px" onclick="window.location.href ='http://localhost:8080/addStudent';" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+        Add Student
+    </button>
+</div>
+
+    <script type="text/javascript">
+
+        function deleteStudent(studentId) {
+            // Make a DELETE request to the server to delete the student with the specified ID
+            fetch(`http://localhost:8080/students/${studentId}`, {
+                method: "DELETE"
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // If the deletion is successful, remove the row from the table
+                        const row = document.getElementById(`studentRow${studentId}`);
+                        row.remove();
+                    } else {
+                        console.log("Error deleting student.");
+                    }
+                })
+                .catch(error => {
+                    console.log("Error deleting student:", error);
+                });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            let studentTableBody = document.getElementById("studentTableBody");
+            function refreshStudents() {
+                fetch("http://localhost:8080/students")
+                    .then(response => response.json())
+                    .then(students => {
+                        studentTableBody.innerHTML = "";
+                        students.forEach(student => {
+                            let row = document.createElement("tr");
+                            row.id = `studentRow${student.id}`
+                            row.innerHTML = `
+                            <td>${student.id}</td>
+                            <td>${student.firstName}</td>
+                            <td>${student.lastName}</td>
+                            <td>${student.email}</td>
+                            <td>${student.major}</td>
+                            <td>${student.coursesTaken.map(course => course.name).join(", ")}</td>
+                            <td>
+                             <button class="btn btn-danger btn-sm" onclick="deleteStudent(${student.id})">X</button>
+                             <button class="btn btn-primary btn-sm" onclick="window.location.href='http://localhost:8080/updateStudent'">Update</button>
+
+                            </td>
+                        `;
+                            studentTableBody.appendChild(row);
+                        });
+                    });
+            }
+
+            refreshStudents();
+
+
+
+
+        });
+    </script>
+</body>
+</html>

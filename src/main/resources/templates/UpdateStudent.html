@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+</head>
+<body>
+<div class="modal fade" id="updateStudentModal" tabindex="-1" aria-labelledby="updateStudentModalLabel" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateStudentModalLabel">Update Student</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateStudentForm">
+                    <div class="mb-3">
+                        <label for="updateFirstName">First Name:</label>
+                        <input type="text" class="form-control" id="updateFirstName" name="updateFirstName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateLastName">Last Name:</label>
+                        <input type="text" class="form-control" id="updateLastName" name="updateLastName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateEmail">Email:</label>
+                        <input type="email" class="form-control" id="updateEmail" name="updateEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateMajor">Major:</label>
+                        <input type="text" class="form-control" id="updateMajor" name="updateMajor" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateCoursesTaken">Courses Taken:</label>
+                        <input type="text" class="form-control" id="updateCoursesTaken" name="updateCoursesTaken" required>
+                    </div>
+                    <input type="hidden" id="updateStudentId" name="updateStudentId">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function openUpdateModal(studentId) {
+        // Fetch the student details by ID
+        fetch(`http://localhost:8080/students/student/${studentId}`)
+            .then(response => response.json())
+            .then(student => {
+                console.log(">>>>>>",student)
+                // Populate the update form with the existing data
+                document.getElementById("updateFirstName").value = student.firstName;
+                document.getElementById("updateLastName").value = student.lastName;
+                document.getElementById("updateEmail").value = student.email;
+                document.getElementById("updateMajor").value = student.major;
+                document.getElementById("updateCoursesTaken").value = student.coursesTaken.map(course => course.name).join(", ");
+                document.getElementById("updateStudentId").value = student.id;
+
+                // Open the update student modal
+                let updateStudentModal = new bootstrap.Modal(document.getElementById("updateStudentModal"));
+                updateStudentModal.show();
+            })
+            .catch(error => {
+                console.log("Error retrieving student details:", error);
+            });
+    }
+</script>
+</body>
+</html>
