@@ -79,7 +79,7 @@ public class StudentServiceImpl implements StudentService {
             student.setCoursesTaken(existing.getCoursesTaken());
             studentRepository.update(student);
         } else {
-            throw new IllegalArgumentException("Student already in use");
+            throw new IllegalArgumentException("Email already in use");
         }
     }
 
