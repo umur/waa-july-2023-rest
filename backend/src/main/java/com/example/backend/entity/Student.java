@@ -25,6 +25,7 @@ public class Student {
     private List<Course> coursesTaken;
 
     public void addCourse(Course course) {
+
         coursesTaken.add(course);
     }
 }

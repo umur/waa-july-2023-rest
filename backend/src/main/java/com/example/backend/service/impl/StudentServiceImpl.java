@@ -38,7 +38,7 @@ public class StudentServiceImpl implements StudentService {
         if (!isCodeExists) {
             studentRepository.create(student);
         } else {
-            throw new IllegalArgumentException("Student already in use");
+            throw new IllegalArgumentException("Email already in use");
         }
 
     }
@@ -72,9 +72,11 @@ public class StudentServiceImpl implements StudentService {
         if (!student.getEmail().contains("@")) {
             throw new IllegalArgumentException("Email must contain @");
         }
-        boolean isCodeExists = studentRepository.getAll().stream().filter(c -> c.getEmail().equals(student.getEmail())
+        boolean isCodeExists = studentRepository.getAll().stream().filter(c -> c.getEmail().equalsIgnoreCase(student.getEmail())
                 && c.getId() != student.getId()).findAny().isPresent();
         if (!isCodeExists) {
+            Student existing = getById(student.getId());
+            student.setCoursesTaken(existing.getCoursesTaken());
             studentRepository.update(student);
         } else {
             throw new IllegalArgumentException("Student already in use");

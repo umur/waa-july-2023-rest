@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LAB 2: Student Management System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Student Management</h1>
+        <hr>
+
+        <!-- Add Student Form -->
+        <h2>Add Student</h2>
+		 <div id="errorContainer" class="alert alert-danger" style="display: none;"></div>
+        <form id="addStudentForm">
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" class="form-control" id="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" class="form-control" id="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="major">Major:</label>
+                <input type="text" class="form-control" id="major" required>
+            </div>
+			<inupt type="hidden" id="id">
+            <button type="submit" class="btn btn-primary" id="submit">Add Student</button>
+        </form>
+        <hr>
+
+        <!-- Get Students By Major -->
+        <h2>Get Students By Major</h2>
+        <form id="getStudentsByMajorForm">
+            <div class="form-group">
+                <label for="majorFilter">Major:</label>
+                <input type="text" class="form-control" id="majorFilter" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Get Students</button>
+        </form>
+        <div id="studentsByMajorResult"></div>
+        <hr>
+
+        <!-- Get Courses By Student ID -->
+        <h2>Get Courses By Student ID</h2>
+        <form id="getCoursesByStudentIdForm">
+            <div class="form-group">
+                <label for="studentId">Student ID:</label>
+                <input type="number" class="form-control" id="studentId" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Get Courses</button>
+        </form>
+        <div id="coursesByStudentIdResult"></div>
+        <hr>
+
+        <!-- Student List -->
+        <h2>Student List</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Major</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="studentsBody"></tbody>
+        </table>
+    </div>
+    <script src="students.js"></script>
+</body>
+</html>

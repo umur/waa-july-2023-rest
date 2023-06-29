@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/students")
 @AllArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class StudentController {
     private final StudentService studentService;
 
@@ -22,8 +23,8 @@ public class StudentController {
     public ResponseEntity<List<Student>> getAll() {
         return ResponseEntity.ok(studentService.getAll());
     }
-    @GetMapping("/major/")
-    public List<Student> getStudentsByMajor(@RequestParam(required = true) String major) {
+    @GetMapping("/getStudentsByMajor")
+    public List<Student> getStudentsByMajor(@RequestParam(required = true,name = "major") String major) {
         return studentService.getStudentsByMajor(major);
     }
 

@@ -24,7 +24,7 @@ public class CourseServiceImpl implements CourseService {
         boolean isCodeExists = courseRepository
                 .getAll()
                 .stream()
-                .filter(c -> c.getCode().equals(course.getCode()))
+                .filter(c -> c.getCode().equalsIgnoreCase(course.getCode()))
                 .findAny()
                 .isPresent();
         if (!isCodeExists) {
@@ -57,7 +57,7 @@ public class CourseServiceImpl implements CourseService {
         boolean isCodeExists = courseRepository
                 .getAll()
                 .stream()
-                .filter(c -> c.getCode().equals(course.getCode())
+                .filter(c -> c.getCode().equalsIgnoreCase(course.getCode())
                         && c.getId() != course.getId())
                 .findAny()
                 .isPresent();

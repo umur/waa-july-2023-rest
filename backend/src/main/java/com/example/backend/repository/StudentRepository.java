@@ -1,5 +1,6 @@
 package com.example.backend.repository;
 
+import com.example.backend.entity.Course;
 import com.example.backend.entity.Student;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,10 @@ public class StudentRepository {
     static {
         studentId = 0L;
         students = new ArrayList<>();
-//        students.add(new Student(++studentId, "Modern Programming", "CS4013A"));
+        Student student=new Student(++studentId, "Taha", "Elsayed", "t@gmail.com", "MSCS", new ArrayList<>());
+        student.addCourse(new Course(4L, "Enterprise Architecture", "CS5446"));
+        student.addCourse(new Course(5L, "Web Application Architecture", "CS545"));
+        students.add(student);
 //        students.add(new Student(++studentId, "Web Application Programming", "CS4725B"));
 //        students.add(new Student(++studentId, "Mobile Device Programming", "CS4734"));
 //        students.add(new Student(++studentId, "Enterprise Architecture", "CS5446"));
@@ -43,7 +47,10 @@ public class StudentRepository {
     }
 
     public List<Student> getStudentsByMajor(String major) {
-        return students.stream().filter(s -> s.getMajor().equals(major)).collect(Collectors.toList());
+        return students
+                .stream()
+                .filter(s -> s.getMajor().equalsIgnoreCase(major))
+                .collect(Collectors.toList());
     }
 
     public void update(Student student) {
