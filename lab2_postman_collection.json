@@ -1,0 +1,18 @@
+{
+	"info": {
+		"_postman_id": "135aeb55-1313-46f4-9297-3965f75dd714",
+		"name": "lab2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		}
+	]
+}
