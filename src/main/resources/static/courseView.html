@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CourseHtml</title>
+  <link rel="course" type="text/css" href="course.css">
+</head>
+
+when button clicked return course with the provided studentId
+<div>
+  <input type="text" id ="StudentId" placeholder="enter Student Id">
+  <button id = "getStudentId"> Get</button>
+  <div id="output" >
+    <table border="1">
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Code</th>
+        <th>StudentId</th>
+
+      </tr>
+      <tbody id="get1">
+
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  document.getElementById("getStudentId").onclick = async function(){
+    let studentId = document.getElementById("StudentId").value;
+
+    let response =  fetch("http://localhost:8080/coursesstudent/" + studentId )
+    let result = response.json();
+
+    let html = document.getElementById("get1").innerHTML;
+
+
+    html += `<tr>
+                        <td> ${result.id}</td>
+                        <td> ${result.name}</td>
+                        <td> ${result.code}</td>
+                        <td> ${result.studentId}</td>
+
+
+                    </tr>`
+
+
+    document.getElementById("get1").innerHTML = html;
+
+  }
+</script>
+</body>
+</html>
+
+</body>
+</html>

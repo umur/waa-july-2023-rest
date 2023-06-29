@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Get By Major</title>
+  <link rel="studentView" type="text/css" href="student.css">
+<!--    <script src="script.js"></script>-->
+</head>
+<body>
+when button clicked return student with the provided major
+<div>
+  <input type="text" id ="txtMajor" placeholder="enter major">
+  <button id = "getMajor"> Get</button>
+  <div id="output" >
+    <table border="1">
+      <tr>
+        <th>Id</th>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>Email</th>
+        <th>Major</th>
+        <th>CoursesTaken</th>
+      </tr>
+      <tbody id="mybody">
+
+      </tbody>
+    </table>
+  </div>
+
+</div>
+<br>
+ When button clicked return student with the provided Id
+<div>
+  <input type="text" id ="txtid" placeholder="enter id">
+  <button id = "getId"> Get By Id</button>
+  <div id="out" >
+    <table border="1">
+      <tr>
+        <th>Id</th>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>Email</th>
+        <th>Major</th>
+        <th>CoursesTaken</th>
+      </tr>
+      <tbody id="body">
+
+      </tbody>
+    </table>
+  </div>
+
+</div>
+<br>
+when button clicked post
+<div>
+  <input type="text" id="id" placeholder="Id">
+  <input type="text" id="firstName" placeholder="First Name">
+  <input type="text" id="lastName" placeholder="Last Name">
+  <input type="text" id="email" placeholder="Email">
+  <input type="text" id="major" placeholder="Major">
+  <input type="text" id="coursesTaken" placeholder="Courses Taken">
+  <button id="addStudent">Add</button>
+</div>
+
+
+<script>
+  document.getElementById("getmajor").onclick = async function(){
+    let major = document.getElementById("txtMajor").value;
+
+    let response =  fetch("http://localhost:8080/studentsmajor/" +major )
+    let result = response.json();
+
+    let html = document.getElementById("mybody").innerHTML;
+
+
+    html += `<tr>
+                        <td> ${result.id}</td>
+                        <td> ${result.firstName}</td>
+                        <td> ${result.lastName}</td>
+                        <td> ${result.email}</td>
+                        <td> ${result.major}</td>
+                        <td> ${result.courseTaken}</td>
+
+                    </tr>`
+
+
+    document.getElementById("mybody").innerHTML = html;
+
+  }
+  document.getElementById("getId").onclick = async function(){
+    let id = document.getElementById("txtId").value;
+
+    let response =  fetch("http://localhost:8080/studentsmajor/" +id )
+    let result = response.json();
+
+    let html = document.getElementById("body").innerHTML;
+
+
+    html += `<tr>
+                        <td> ${result.id}</td>
+                        <td> ${result.firstName}</td>
+                        <td> ${result.lastName}</td>
+                        <td> ${result.email}</td>
+                        <td> ${result.major}</td>
+                        <td> ${result.courseTaken}</td>
+
+                    </tr>`
+
+
+    document.getElementById("mybody").innerHTML = html;
+
+  }
+  document.getElementById("addStudent").onclick = async function() {
+    let id = document.getElementById("id").value;
+    let firstName = document.getElementById("firstName").value;
+    let lastName = document.getElementById("lastName").value;
+    let email = document.getElementById("email").value;
+    let major = document.getElementById("major").value;
+    let coursesTaken = document.getElementById("coursesTaken").value;
+
+    let studentData = {
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      major: major,
+      courseTaken: coursesTaken
+    };
+
+    let response = await fetch('http://localhost:8080/students', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(studentData)
+    });
+    let result = await response.json();
+  }
+
+</script>
+</body>
+</html>
