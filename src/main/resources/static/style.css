@@ -3,7 +3,7 @@ ul li {
     cursor: pointer;
 }
 
-#allCoursesDiv, #createCourseDiv {
+#createCourseDiv, #updateCourseDiv {
     display: none;
 }
 

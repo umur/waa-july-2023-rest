@@ -14,17 +14,13 @@
           </a>
     
           <ul class="nav nav-pills">
-            <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
-            <li class="nav-item nav-link" id="fetchCoursesBtn">Courses</li>
+            <li class="nav-item"><a href="#" class="nav-link active">Home</a></li>
+            <li class="nav-item nav-link" id="fetchCoursesBtn">Show Courses</li>
+            <li class="nav-item nav-link" id="showCoursesFormBtn">Add new Course</li>
             <li class="nav-item"><a href="/students" class="nav-link">Students</a></li>
             <li class="nav-item"><a href="#" class="nav-link">About</a></li>
           </ul>
         </header>
-
-        <h2>welcome to the spring boot rest app for lab 2</h2>
-        <button id="showCoursesFormBtn" class="btn btn-primary">Add New Course</button>
-        <button id="update-course-btn" class="btn btn-primary">Update course</button>
-        <button id="delete-course-btn" class="btn btn-primary">Delete course</button>
 
         <div id="allCoursesDiv" class="mt-5">
             <h2>All Courses List</h2>
@@ -59,6 +55,22 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Create Course</button>
                 <button id="cancelCreateBtn" type="button" class="btn btn-secondary">Cancel</button>
+            </form>
+        </div>
+
+        <div id="updateCourseDiv" class="mt-5">
+            <h2>Update Course</h2>
+            <form id="updateCourseForm">
+                <input type="hidden" id="updateCourseId">
+                <div class="mb-3">
+                    <label for="updateCourseName" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="updateCourseName" placeholder="Course Name">
+                </div>
+                <div class="mb-3">
+                    <label for="updateCourseCode" class="form-label">Code</label>
+                    <input type="text" class="form-control" id="updateCourseCode" placeholder="Course Code">
+                </div>
+                <button type="submit" class="btn btn-primary">Update Course</button>
             </form>
         </div>
 

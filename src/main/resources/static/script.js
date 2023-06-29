@@ -6,6 +6,7 @@ const allCoursesDiv = document.getElementById('allCoursesDiv');
 const createCourseDiv = document.getElementById('createCourseDiv');
 
 const createCourseForm = document.getElementById('createCourseForm');
+const updateCourseForm = document.getElementById('updateCourseForm');
 const cancelCreateBtn = document.getElementById('cancelCreateBtn');
 
 let btn3 = document.getElementById("update-course-btn");
@@ -13,7 +14,7 @@ let btn4 = document.getElementById("delete-course-btn");
 
 
 // fetch all courses
-fetchCoursesBtn.addEventListener('click', () => {
+function fetchCourses() {
 
   allCoursesDiv.style.display = 'block';
   createCourseDiv.style.display = 'none';
@@ -30,7 +31,9 @@ fetchCoursesBtn.addEventListener('click', () => {
       .catch(error => {
           console.error('Error:', error);
       });
-});
+}
+
+fetchCoursesBtn.addEventListener('click', fetchCourses);
 
 
 showCoursesFormBtn.addEventListener('click', () => {
@@ -96,30 +99,26 @@ function appendCourseToTable(course, tableBody) {
 // Update course
 function updateCourse(courseId, courseName, courseCode) {
 
-  console.log('Updating course with ID:', courseId);
-
-  // Update an existing course
-  const updatedCourse = {
-    id: courseId,
-    name: courseName,
-    code: courseCode
-  };
-
-  fetch('/courses/'+updatedCourse.id, {
+  fetch(`/courses/${courseId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(updatedCourse)
-  })
-    .then(response => response.json())
-    .then(course => {
-      console.log(course);
-      // Process the updated course
+    body: JSON.stringify({
+      name: courseName,
+      code: courseCode
     })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+  })
+  .then(response => {
+    if (response.ok) {
+      fetchCourses();
+    } else {
+      console.error('Error:', response.statusText);
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 }
 
 
@@ -128,12 +127,12 @@ function deleteCourse(courseId) {
 
   if (!confirm('Are you sure you want to delete this course?')) return;
 
-  fetch('/courses/'+courseId, {
+  fetch(`/courses/${courseId}`, {
     method: 'DELETE'
   })
     .then(response => {
       if (response.ok) {
-        location.reload();
+        fetchCourses();
       } else {
         console.error('Error:', response.statusText);
       }
@@ -147,15 +146,44 @@ function deleteCourse(courseId) {
 document.addEventListener('DOMContentLoaded', () => {
   const coursesTableBody = document.getElementById('coursesTableBody');
 
+  const updateCourseForm = document.getElementById('updateCourseDiv');
+  const updateCourseIdInput = document.getElementById('updateCourseId');
+  const updateCourseNameInput = document.getElementById('updateCourseName');
+  const updateCourseCodeInput = document.getElementById('updateCourseCode');
+
+
   // Update course event listener
   coursesTableBody.addEventListener('click', event => {
     if (event.target.classList.contains('updateCourseBtn')) {
       const courseId = event.target.dataset.id;
       const courseName = event.target.dataset.name;
       const courseCode = event.target.dataset.code;
-      updateCourse(courseId, courseName, courseCode);
+
+      console.log(courseId, courseName, courseCode);
+
+      // Populate the update form with course values
+      updateCourseIdInput.value = courseId;
+      updateCourseNameInput.value = courseName;
+      updateCourseCodeInput.value = courseCode;
+
+      updateCourseForm.style.display = 'block';
+      allCoursesDiv.style.display = 'none';
     }
   });
+
+  // Update form submit event listener
+  updateCourseForm.addEventListener('submit', event => {
+    event.preventDefault();
+
+    const updatedCourseId = updateCourseIdInput.value;
+    const updatedCourseName = updateCourseNameInput.value;
+    const updatedCourseCode = updateCourseCodeInput.value;
+
+    updateCourse(updatedCourseId, updatedCourseName, updatedCourseCode);
+
+    updateCourseForm.style.display = 'none';
+  });
+
 
   // Delete course event listener
   coursesTableBody.addEventListener('click', event => {
