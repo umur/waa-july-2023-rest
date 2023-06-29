@@ -236,11 +236,13 @@ function createStudentRow(student) {
     const actionsCell = document.createElement('td');
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
+	deleteButton.className = 'btn btn-danger btn-sm';
     deleteButton.addEventListener('click', () => deleteStudent(student.id));
     actionsCell.appendChild(deleteButton);
 
     const editButton = document.createElement('button');
     editButton.textContent = 'Edit';
+    editButton.className = 'btn btn-primary btn-sm mr-2';	
     editButton.addEventListener('click', () => editStudent(student.id));
     actionsCell.appendChild(editButton);
 
