@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Course Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Student Course Management</h1>
+
+    <h2>Students</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Major</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="studentTableBody">
+        <!-- Students will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <h2>Courses</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="courseTableBody">
+        <!-- Courses will be dynamically added here -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+            fetch('http://localhost:8080/students')
+                .then(response => response.json())
+                .then(students => displayStudents(students))
+                .catch(error => console.error('Error:', error));
+
+            fetch('http://localhost:8080/courses')
+                .then(response => response.json())
+                .then(courses => displayCourses(courses))
+                .catch(error => console.error('Error:', error));
+        });
+
+        function displayStudents(students) {
+            const studentTableBody = document.getElementById('studentTableBody');
+            studentTableBody.innerHTML = '';
+
+            students.forEach(student => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.id}</td>
+                    <td>${student.firstName}</td>
+                    <td>${student.lastName}</td>
+                    <td>${student.email}</td>
+                    <td>${student.major}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteStudent(${student.id})">Delete</button>
+                        <button class="btn btn-primary btn-sm" onclick="updateStudent(${student.id})">Update</button>
+                    </td>
+                `;
+                studentTableBody.appendChild(row);
+            });
+        }
+
+        function displayCourses(courses) {
+            const courseTableBody = document.getElementById('courseTableBody');
+            courseTableBody.innerHTML = '';
+
+            courses.forEach(course => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${course.id}</td>
+                    <td>${course.name}</td>
+                    <td>${course.code}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteCourse(${course.id})">Delete</button>
+                        <button class="btn btn-primary btn-sm" onclick="updateCourse(${course.id})">Update</button>
+                    </td>
+                `;
+                courseTableBody.appendChild(row);
+            });
+        }
+
+        function deleteStudent(studentId) {
+            //Make a DELETE request to the backend API with the studentId
+            fetch(`http://localhost:8080/students/${studentId}`, { method: 'DELETE' })
+                .then(() => {
+                    // Refresh the student table
+                    fetch('http://localhost:8080/students')
+                        .then(response => response.json())
+                        .then(students => displayStudents(students))
+                        .catch(error => console.error('Error:', error));
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function updateStudent(studentId) {
+            // Perform update logic for the student with the given studentId
+            // Implement your update logic here or redirect to an update page
+            console.log(`Updating student with ID: ${studentId}`);
+        }
+
+        function deleteCourse(courseId) {
+            // Make a DELETE request to the backend API with the courseId
+            fetch(`http://localhost:8080/courses/${courseId}`, { method: 'DELETE' })
+                .then(() => {
+                    //Refresh the course table
+                    fetch('http://localhost:8080/courses')
+                        .then(response => response.json())
+                        .then(courses => displayCourses(courses))
+                        .catch(error => console.error('Error:', error));
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function updateCourse(courseId) {
+            // Perform update logic for the course with the given courseId
+            // Implement your update logic here or redirect to an update page
+            console.log(`Updating course with ID: ${courseId}`);
+        }
+</script>
+</body>
+</html>
